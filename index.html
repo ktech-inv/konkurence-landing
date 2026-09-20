@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Konkurenční analýza — KAI Tech</title>
+<meta name="description" content="Zjistěte, co vaše konkurence komunikuje a vy ne. Konkurenty najdeme sami, porovnáme 17 měřitelných věcí na homepage a pošleme report e-mailem.">
+<meta property="og:title" content="Konkurenční analýza — KAI Tech">
+<meta property="og:description" content="Konkurenty najdeme sami. Porovnáme, co komunikují oni a co vy. Report e-mailem.">
+<meta property="og:type" content="website">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'DM Sans',-apple-system,Segoe UI,sans-serif;background:#f6f8fb;color:#111827;line-height:1.65}
+h1,h2,h3{font-family:'Syne','DM Sans',sans-serif;font-weight:800;line-height:1.18;letter-spacing:-.015em}
+a{color:#1e6bff}
+.wrap{max-width:1020px;margin:0 auto;padding:0 20px}
+
+/* hlavicka */
+.top{background:#060b1a;background:linear-gradient(135deg,#060b1a 0%,#0f1a35 100%);color:#fff;position:relative;overflow:hidden}
+.top:after{content:"";position:absolute;left:0;right:0;bottom:0;height:3px;background:linear-gradient(90deg,#1e6bff,#00c2ff)}
+.znacka{display:flex;align-items:center;gap:.5rem;padding:22px 0}
+.znacka b{font-family:'Syne',sans-serif;font-weight:800;font-size:1rem;letter-spacing:.02em}
+.znacka b i{font-style:normal;color:#00c2ff}
+.hero{padding:48px 0 76px;max-width:760px}
+.hero h1{font-size:2.6rem;color:#fff}
+.hero h1 span{color:#00c2ff}
+.hero p{margin-top:18px;font-size:1.15rem;color:#b8cae0}
+.cta{display:inline-block;margin-top:28px;background:#1e6bff;color:#fff;padding:15px 30px;border-radius:10px;
+     text-decoration:none;font-weight:600;font-size:1.02rem}
+.cta:hover{background:#1558d6}
+.pod-cta{margin-top:12px;font-size:.88rem;color:#8ba3c0}
+
+/* sekce */
+section{padding:64px 0}
+section h2{font-size:1.9rem;margin-bottom:10px}
+.podnadpis{color:#6b7280;margin-bottom:34px;max-width:660px}
+.mrizka{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:20px}
+.karta{background:#fff;border:1px solid #e5e7eb;border-radius:14px;padding:24px}
+.karta h3{font-size:1.05rem;margin-bottom:8px}
+.karta p{color:#4b5563;font-size:.95rem}
+.cislo{display:inline-flex;align-items:center;justify-content:center;width:30px;height:30px;border-radius:50%;
+       background:#0f1a35;color:#00c2ff;font-family:'Syne',sans-serif;font-weight:800;font-size:.85rem;margin-bottom:12px}
+
+/* ukazka tabulky */
+.tabulka-obal{overflow-x:auto;background:#fff;border:1px solid #e5e7eb;border-radius:14px}
+table{border-collapse:collapse;width:100%;min-width:480px;font-size:.93rem}
+th,td{padding:11px 16px;text-align:left;border-bottom:1px solid #f3f4f6}
+th{background:#f9fafb;font-weight:600;font-size:.82rem;text-transform:uppercase;letter-spacing:.04em;color:#6b7280}
+tr:last-child td{border-bottom:none}
+.v{font-weight:600;font-size:.86rem}
+.ztraci{color:#dc2626}.vede{color:#15803d}.lisi{color:#d97706}
+
+/* poctivost */
+.poctive{background:#0f1a35;color:#fff;border-radius:16px;padding:34px}
+.poctive h2{color:#fff}
+.poctive .podnadpis{color:#b8cae0}
+.poctive ul{list-style:none;margin-top:6px}
+.poctive li{padding:9px 0 9px 26px;position:relative;color:#d6e2f0;font-size:.96rem}
+.poctive li:before{content:"—";position:absolute;left:0;color:#00c2ff}
+
+/* cena */
+.ceny{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:20px;align-items:start}
+.cena{background:#fff;border:1px solid #e5e7eb;border-radius:16px;padding:28px;position:relative}
+.cena.hlavni{border:2px solid #1e6bff}
+.stitek{position:absolute;top:-11px;left:28px;background:#1e6bff;color:#fff;font-size:.72rem;font-weight:600;
+        padding:4px 12px;border-radius:999px;letter-spacing:.03em}
+.cena h3{font-size:1.15rem}
+.castka{font-family:'Syne',sans-serif;font-size:2.3rem;font-weight:800;margin:12px 0 2px}
+.castka small{font-size:.9rem;font-weight:400;color:#6b7280;font-family:'DM Sans',sans-serif}
+.cena ul{list-style:none;margin:18px 0 24px}
+.cena li{padding:7px 0 7px 24px;position:relative;font-size:.94rem;color:#374151}
+.cena li:before{content:"✓";position:absolute;left:0;color:#1e6bff;font-weight:700}
+.cena .cta{width:100%;text-align:center;margin-top:0}
+
+/* faq */
+details{background:#fff;border:1px solid #e5e7eb;border-radius:12px;padding:16px 20px;margin-bottom:10px}
+details[open]{border-color:#c7d7f5}
+summary{cursor:pointer;font-weight:600;font-size:.99rem;list-style:none}
+summary::-webkit-details-marker{display:none}
+summary:after{content:"+";float:right;color:#1e6bff;font-weight:700}
+details[open] summary:after{content:"−"}
+details p{margin-top:12px;color:#4b5563;font-size:.95rem}
+
+footer{background:#060b1a;color:#8ba3c0;padding:34px 0;font-size:.88rem}
+footer a{color:#00c2ff;text-decoration:none}
+.foot{display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px}
+
+@media(max-width:640px){
+  .hero{padding:32px 0 52px}
+  .hero h1{font-size:1.95rem}
+  .hero p{font-size:1.03rem}
+  section{padding:46px 0}
+  section h2{font-size:1.55rem}
+}
+</style>
+</head>
+<body>
+
+<div class="top">
+  <div class="wrap">
+    <div class="znacka">
+      <svg width="22" height="26" viewBox="0 0 36 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <defs><linearGradient id="kaiLogo" x1="0" y1="40" x2="36" y2="0" gradientUnits="userSpaceOnUse">
+        <stop offset="0%" stop-color="#1e6bff"/><stop offset="100%" stop-color="#7eb3ff"/></linearGradient></defs>
+        <path d="M4 36 Q18 28 32 36" stroke="url(#kaiLogo)" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+        <path d="M18 4 L31 34 L5 34 Z" fill="url(#kaiLogo)" opacity="0.9"/>
+        <path d="M18 18 L23 30 L13 30 Z" fill="#060b1a"/>
+        <circle cx="18" cy="3" r="2.2" fill="#00c2ff"/>
+      </svg>
+      <b>KAI<i>Tech</i></b>
+    </div>
+    <div class="hero">
+      <h1>Nevíte, koho sledovat?<br><span>Najdeme vaši konkurenci za vás.</span></h1>
+      <p>Zadáte adresu svého webu. Dohledáme firmy, které nabízejí totéž, a porovnáme,
+         co na domovské stránce komunikují oni a co vy. Report dorazí e-mailem.</p>
+      <a class="cta" href="plink_ZDE_ID_P9_JEDNORAZ">Spustit analýzu</a>
+      <div class="pod-cta">Konkurenty můžete zadat i sami — nebo naše doplnit o ty, které znáte.</div>
+    </div>
+  </div>
+</div>
+
+<section>
+  <div class="wrap">
+    <h2>Jak to funguje</h2>
+    <p class="podnadpis">Od zaplacení k reportu, bez schůzky a bez vyplňování dotazníků.</p>
+    <div class="mrizka">
+      <div class="karta"><div class="cislo">1</div>
+        <h3>Zadáte svůj web</h3>
+        <p>Stačí adresa. Konkurenty vyplňovat nemusíte — a když je znáte, klidně je zadejte.</p></div>
+      <div class="karta"><div class="cislo">2</div>
+        <h3>Najdeme konkurenty</h3>
+        <p>Z vašeho webu odvodíme obor, prohledáme trh a vybereme firmy, které nabízejí srovnatelnou službu.
+           Články, žebříčky a katalogy vyřadíme.</p></div>
+      <div class="karta"><div class="cislo">3</div>
+        <h3>Porovnáme, co kdo říká</h3>
+        <p>Sedmnáct měřitelných věcí na domovské stránce — od dopravy zdarma po case studies.
+           Podle typu webu ukážeme jen ty, které dávají smysl.</p></div>
+      <div class="karta"><div class="cislo">4</div>
+        <h3>Přijde report</h3>
+        <p>Tabulka s verdikty, snímky webů, cenové pásmo a konkrétní doporučení. E-mailem, trvalý odkaz.</p></div>
+    </div>
+  </div>
+</section>
+
+<section style="padding-top:0">
+  <div class="wrap">
+    <h2>Co v reportu uvidíte</h2>
+    <p class="podnadpis">Ukázka tabulky. U každé položky je vidět, jak jste na tom vy a jak oni —
+       a co z toho plyne.</p>
+    <div class="tabulka-obal">
+      <table>
+        <tr><th>Co se měří</th><th>Vy</th><th>Oni</th><th>Verdikt</th></tr>
+        <tr><td>Případové studie</td><td>ne</td><td>ano</td><td class="v ztraci">ztrácíte</td></tr>
+        <tr><td>Newsletter</td><td>ne</td><td>ano</td><td class="v ztraci">ztrácíte</td></tr>
+        <tr><td>Platební metody</td><td>karta</td><td>převod</td><td class="v lisi">liší se</td></tr>
+        <tr><td>Integrace a API</td><td>ano</td><td>ne</td><td class="v vede">vedete</td></tr>
+        <tr><td>Telefon v hlavičce</td><td>ano</td><td>ano</td><td class="v">shoda</td></tr>
+      </table>
+    </div>
+    <div class="mrizka" style="margin-top:20px">
+      <div class="karta"><h3>Snímky jejich webů</h3>
+        <p>Jak jejich stránka vypadá dnes — ne jak vypadala, když jste ji viděli naposledy.</p></div>
+      <div class="karta"><h3>Cenové pásmo</h3>
+        <p>Kde se pohybují jejich ceny proti vašim. Když nejsou srovnatelné, řekneme to
+           místo vymýšlení čísla.</p></div>
+      <div class="karta"><h3>Co s tím</h3>
+        <p>Doporučení stavěná na nalezených mezerách, seřazená podle priority — ne obecné rady.</p></div>
+      <div class="karta"><h3>Co se od minule změnilo</h3>
+        <p>U sledování: každý týden porovnáme stav s minulým a napíšeme, co konkurence změnila.</p></div>
+    </div>
+  </div>
+</section>
+
+<section style="padding-top:0">
+  <div class="wrap">
+    <div class="poctive">
+      <h2>Co analýza nedělá</h2>
+      <p class="podnadpis">Aby bylo jasné, co si kupujete.</p>
+      <ul>
+        <li>Měří <strong>domovskou stránku</strong>. Když konkurent něco nabízí, ale nepíše to na homepage,
+            report to uvede jako „nekomunikuje se" — ne jako „nemá".</li>
+        <li>Když se web nepodaří přečíst (obsah se skládá až v prohlížeči),
+            <strong>řekneme to</strong> a verdikty u něj neuvádíme. Radši prázdné místo než vymyšlené srovnání.</li>
+        <li>Neslibujeme kompletní přehled trhu. Dohledáme firmy, které jsou vidět —
+            a vždy napíšeme, proč jsme je vybrali, abyste je mohli odmítnout.</li>
+        <li>Nesleduje ceny jednotlivých produktů ani skladovost. Na to jsou jiné nástroje.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section style="padding-top:0">
+  <div class="wrap">
+    <h2>Cena</h2>
+    <p class="podnadpis">Agentura si za analýzu konkurence účtuje 15–20 tisíc a dodá za několik dní.</p>
+    <div class="ceny">
+      <div class="cena">
+        <h3>Jednorázová analýza</h3>
+        <div class="castka">1 490 Kč</div>
+        <small>jednorázově, bez závazku</small>
+        <ul>
+          <li>Až 3 konkurenti</li>
+          <li>Dohledání konkurentů v ceně</li>
+          <li>Porovnání 17 atributů</li>
+          <li>Snímky webů a cenové pásmo</li>
+          <li>Doporučení podle priority</li>
+        </ul>
+        <a class="cta" href="plink_ZDE_ID_P9_JEDNORAZ">Objednat analýzu</a>
+      </div>
+      <div class="cena hlavni">
+        <span class="stitek">Dává větší smysl</span>
+        <h3>Sledování konkurence</h3>
+        <div class="castka">990 Kč<small> / měsíc</small></div>
+        <small>zrušíte kdykoli</small>
+        <ul>
+          <li>Vše z jednorázové analýzy</li>
+          <li><strong>Report každý týden</strong></li>
+          <li>Upozornění na změny u konkurence</li>
+          <li>Historie — vidíte vývoj v čase</li>
+          <li>Seznam sledovaných webů můžete měnit</li>
+        </ul>
+        <a class="cta" href="plink_ZDE_ID_P9_MESICNE">Zapnout sledování</a>
+      </div>
+    </div>
+    <p class="pod-cta" style="color:#6b7280;margin-top:18px">
+      Jedno měření řekne, jak jste na tom dnes. Teprve opakované ukáže, kam se konkurence posouvá —
+      proto má sledování smysl víc než jednorázový snímek.</p>
+  </div>
+</section>
+
+<section style="padding-top:0">
+  <div class="wrap">
+    <h2>Časté otázky</h2>
+    <div style="margin-top:22px">
+      <details><summary>Co když nevím, kdo je moje konkurence?</summary>
+        <p>To je hlavní důvod, proč analýza vznikla. Zadáte jen svůj web; obor si odvodíme z toho,
+           co na něm máte, a konkurenty dohledáme. U každého napíšeme, proč jsme ho vybrali,
+           takže poznáte, jestli jsme se trefili.</p></details>
+      <details><summary>Můžu si konkurenty zadat sám?</summary>
+        <p>Ano. Ve formuláři vyberete „zadám si je sám" a vyplníte až tři adresy.
+           Třetí možnost je kombinace — zadáte ty, které znáte, a zbytek dohledáme.</p></details>
+      <details><summary>Jak dlouho to trvá?</summary>
+        <p>Report dorazí e-mailem během několika minut od zaplacení. Nemusíte u toho být.</p></details>
+      <details><summary>Co přesně se porovnává?</summary>
+        <p>Sedmnáct věcí, které se dají na domovské stránce objektivně změřit — doprava zdarma,
+           dodací lhůta, platební metody, vrácení, záruka, zkušební verze, integrace a API, demo,
+           dostupnost a SLA, ceník na webu, případové studie, certifikace, rezervace termínu,
+           telefon v hlavičce, sociální důkaz, chat a newsletter. Podle typu webu ukážeme jen ty,
+           které pro něj dávají smysl.</p></details>
+      <details><summary>Funguje to i pro služby a SaaS, ne jen pro e-shopy?</summary>
+        <p>Ano. Typ webu rozpoznáme automaticky a podle toho vybereme, co má smysl porovnávat —
+           u služeb nemá cenu řešit dopravu zdarma. Typ můžete i sami zadat ve formuláři.</p></details>
+      <details><summary>Co když konkurentův web nejde načíst?</summary>
+        <p>Některé weby skládají obsah až v prohlížeči a ze serveru nepřijde nic k porovnání.
+           V takovém případě to report napíše a verdikty u toho webu neuvádí. Nebudeme tvrdit,
+           že konkurent něco nemá, když jsme mu stránku nepřečetli.</p></details>
+      <details><summary>Jak zruším sledování?</summary>
+        <p>Napište nám na info@kaitechinvest.com a předplatné ukončíme. Žádná výpovědní lhůta.</p></details>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap foot">
+    <div>KAI Tech · <a href="https://kaitechinvest.com">kaitechinvest.com</a> · info@kaitechinvest.com</div>
+    <div><a href="https://kaitechinvest.com/vop.html">Obchodní podmínky</a> ·
+         <a href="https://kaitechinvest.com/gdpr.html">Ochrana údajů</a></div>
+  </div>
+</footer>
+
+</body>
+</html>
